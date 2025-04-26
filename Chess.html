@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Elitist Club - No Cap, Just Checkmate</title>
+    <style>
+        :root {
+            --primary-bg: #f0f5f0;
+            --secondary-bg: #e0e8e0;
+            --accent: #4CAF50;
+            --text: #333;
+            --header: #1e1e1e;
+            --card-bg: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --highlight: #8bc34a;
+        }
+
+        .dark-mode {
+            --primary-bg: #1e1e1e;
+            --secondary-bg: #2d2418;
+            --accent: #8b5a2b;
+            --text: #f0f0f0;
+            --header: #121212;
+            --card-bg: #2d2d2d;
+            --shadow: rgba(0, 0, 0, 0.5);
+            --highlight: #cd853f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: var(--header);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent);
+        }
+
+        .theme-toggle {
+            margin-left: 1.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .auth-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .auth-btn:hover {
+            background-color: var(--highlight);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 6rem auto 2rem;
+            padding: 0 2rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('home.png');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            margin-top: -4rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+        }
+
+        .cta-btn {
+   background-color: var(--accent);
+   color: white;
+   border: none;
+   padding: 1.5rem 1.5rem;
+   font-size: 1.4rem;
+   border-radius: 4px;
+   margin: 2rem auto 1rem;
+   cursor: pointer;
+   font-weight: bold;
+   transition: background-color 0.3s, transform 0.2s;
+   display: inline-block;
+   text-align: center;
+   min-width: 160px;
+   max-width: 180px;
+   height: auto;
+}
+
+.cta-btn:hover {
+   background-color: var(--highlight);
+   transform: translateY(3px);
+}
+
+       .card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 8px var(--shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .opening-card {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .opening-img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .master-card {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .master-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .master-info {
+            flex: 1;
+        }
+
+        .challenge-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .challenge-btn:hover {
+            background-color: var(--highlight);
+        }
+
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: var(--card-bg);
+            color: var(--text);
+        }
+
+        button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 1rem;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--highlight);
+        }
+
+        footer {
+            background-color: var(--header);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+        }
+
+        .page {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        .rating {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Scroll Animation */
+        .scroll-animation {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        .scroll-animation.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Meme quotes */
+        .meme-quote {
+            font-style: italic;
+            background-color: var(--secondary-bg);
+            padding: 1rem;
+            border-left: 4px solid var(--accent);
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .visually-hidden {
+            position: absolute;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            Chess <span>Elitist</span> Club
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" onclick="showPage('home')">Home</a></li>
+                <li><a href="#" onclick="showPage('about')">About Us</a></li>
+                <li><a href="#" onclick="showPage('openings')">Openings</a></li>
+                <li><a href="#" onclick="showPage('masters')">Challenge Masters</a></li>
+                <li><button class="theme-toggle" onclick="toggleTheme()">🌓</button></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <button class="auth-btn" onclick="showPage('login')">Login</button>
+            <button class="auth-btn" onclick="showPage('signup')">Sign Up</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <section class="hero">
+                <h1>Chess Elitist Club</h1>
+                <p>Where pawns get promoted and players get roasted</p>
+                <button class="cta-btn" onclick="showPage('signup')">Join Our Vibe</button>
+            </section>
+            
+            <div class="container">
+                <section class="scroll-animation">
+                    <h2>Why Join Our Club?</h2>
+                    <div class="card">
+                        <p>Because regular chess clubs are mid. At Chess Elitist Club, we don't just play chess – we live, breathe, and occasionally eat chess pieces (kidding, they're a choking hazard).</p>
+                        <div class="meme-quote">
+                            "Tell me you're a chess noob without telling me you're a chess noob" - Every Master at our club
+                        </div>
+                        <p>Join us and learn why the Bongcloud Opening is simultaneously the greatest flex and the worst decision of your chess career.</p>
+                    </div>
+                </section>
+                
+                <section class="scroll-animation">
+                    <h2>Upcoming Events</h2>
+                    <div class="card">
+                        <h3>Friday Night Blitz & Roast</h3>
+                        <p>Come get your chess skills and your ego destroyed in the same evening! Not to flex, but our masters can checkmate you while making TikToks.</p>
+                    </div>
+                    <div class="card">
+                        <h3>"Is This Loss?" Tournament</h3>
+                        <p>A special tournament where losing in style earns more points than winning boringly. Bring your most creative ways to get checkmated!</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- About Page -->
+        <div id="about" class="page">
+            <div class="container">
+                <h1>About Chess Elitist Club</h1>
+                <section class="scroll-animation">
+                    <div class="card">
+                        <h2>Our Story</h2>
+                        <p>Chess Elitist Club was founded in 2020 when five chess enthusiasts realized that playing chess without roasting each other was simply not the vibe.</p>
+                        <p>What started as friendly trash talk over boards has evolved into a full-fledged community where skill is respected, but not without a healthy dose of "did you really just move there?" energy.</p>
+                        <div class="meme-quote">
+                            "Chess is like dating. If you're not thinking at least 3 moves ahead, you're getting dumped." - Club Wisdom
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="scroll-animation">
+                    <div class="card">
+                        <h2>Our Philosophy</h2>
+                        <p>We believe chess should be:</p>
+                        <ul>
+                            <li>Intellectually challenging ✓</li>
+                            <li>Full of Gen Z humor ✓</li>
+                            <li>A place to flex your big brain energy ✓</li>
+                            <li>Boring ✗</li>
+                        </ul>
+                        <p>And yes, we will judge your opening choices, but in a supportive way. Mostly.</p>
+                    </div>
+                </section>
+                
+                <section class="scroll-animation">
+                    <div class="card">
+                        <h2>Club Achievements</h2>
+                        <p>• Created the first chess meme repository with over 10,000 "outstanding move" variations</p>
+                        <p>• Hosted the infamous "Checkmate or Canceled" tournament that went viral on Chess Twitter</p>
+                        <p>• Convinced 5 people that the "double bongcloud" is a legitimate opening (it's not, don't try it)</p>
+                        <p>• Collectively spent more time analyzing chess positions than sleeping (no cap)</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Openings Page -->
+        <div id="openings" class="page">
+            <div class="container">
+                <h1>Chess Openings We Teach</h1>
+                <p>Learn why your favorite opening is simultaneously brilliant and "literally throwing"</p>
+                
+                <section class="scroll-animation">
+                    <div class="card opening-card">
+                        <img src="queen.png" alt="Queen's Gambit Opening" class="opening-img">
+                        <div>
+                            <h2>Queen's Gambit</h2>
+                            <p>Not just a Netflix show your parents binge-watched. This opening is for those who want to say "I'm sophisticated" without actually saying it.</p>
+                            <div class="meme-quote">
+                                "Queen's Gambit players have 'live, laugh, love' energy but for chess." - Raghav, probably
+                            </div>
+                            <p>Learn when to deploy this opening and when your opponent will simply respond with "nah, I'm good".</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="scroll-animation">
+                    <div class="card opening-card">
+                        <img src="sicilian.png" alt="Sicilian Defense" class="opening-img">
+                        <div>
+                            <h2>Sicilian Defense</h2>
+                            <p>The chess equivalent of replying "k" to a paragraph text. Minimal effort from Black that somehow causes maximum frustration for White.</p>
+                            <div class="meme-quote">
+                                "Playing against the Sicilian is like trying to explain TikTok to your grandparents - confusing and you'll probably fail." - Aryan
+                            </div>
+                            <p>We'll teach you all 49372 variations. Well, maybe just the main ones.</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="scroll-animation">
+                    <div class="card opening-card">
+                        <img src="londonsystem.png" alt="London System" class="opening-img">
+                        <div>
+                            <h2>London System</h2>
+                            <p>The "basic" opening of chess. Set up the same structure every game regardless of what your opponent does. It's giving NPC energy.</p>
+                            <div class="meme-quote">
+                                "London System players be like: 'I just think it's neat'" - Thulasi
+                            </div>
+                            <p>Perfect for when you want to play chess but don't actually want to think too much. No shade. (Full shade.)</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="scroll-animation">
+                    <div class="card opening-card">
+                        <img src="bongcloud.png" alt="Bongcloud Attack" class="opening-img">
+                        <div>
+                            <h2>Bongcloud Attack</h2>
+                            <p>1.e4 e5 2.Ke2. That's it. That's the opening. When you want to disrespect your opponent in the most obvious way possible.</p>
+                            <div class="meme-quote">
+                                "Playing the Bongcloud is like wearing Crocs to a wedding. Bold statement, questionable choice." - Anjana
+                            </div>
+                            <p>We'll teach you when to play this (never) and how to recover from it (you probably can't).</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Masters Challenge Page -->
+        <div id="masters" class="page">
+            <div class="container">
+                <h1>Challenge Our Masters</h1>
+                <p>Think you've got what it takes? Our masters are ready to humble you.</p>
+                
+                <section class="scroll-animation">
+                    <div class="card master-card">
+                        <img src="Raghav.png" alt="Raghav" class="master-img">
+                        <div class="master-info">
+                            <h2>Raghav "Check Vibe" Master</h2>
+                            <p>Rating: <span class="rating">2500</span></p>
+                            <p>Our highest-rated player who will analyze your moves and your questionable life choices simultaneously.</p>
+                            <div class="meme-quote">
+                                "I don't always checkmate people, but when I do, I make sure they question their entire chess journey."
+                            </div>
+                            <button class="challenge-btn">Catch These Hands</button>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="scroll-animation">
+                    <div class="card master-card">
+                        <img src="Aryan.png" alt="Aryan" class="master-img">
+                        <div class="master-info">
+                            <h2>Aryan "No Cap Trap" Specialist</h2>
+                            <p>Rating: <span class="rating">2300</span></p>
+                            <p>The master of traps and tricks. Will absolutely make you fall for the same trick twice.</p>
+                            <div class="meme-quote">
+                                "Your opening preparation vs. mine is giving 'we are not the same' energy."
+                            </div>
+                            <button class="challenge-btn">Try Your Luck</button>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="scroll-animation">
+                    <div class="card master-card">
+                        <img src="Anjana.png" alt="Anjana" class="master-img">
+                        <div class="master-info">
+                            <h2>Anjana "Queen Behavior" Tactician</h2>
+                            <p>Rating: <span class="rating">2100</span></p>
+                            <p>Will sacrifice her queen just to flex on you with a checkmate using only minor pieces.</p>
+                            <div class="meme-quote">
+                                "Your defense is giving participation trophy vibes."
+                            </div>
+                            <button class="challenge-btn">Get Schooled</button>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="scroll-animation">
+                    <div class="card master-card">
+                        <img src="Thulasi.png" alt="Thulasi" class="master-img">
+                        <div class="master-info">
+                            <h2>Thulasi "Endgame Menace" Expert</h2>
+                            <p>Rating: <span class="rating">2000</span></p>
+                            <p>Will trade down into an endgame that looks even but somehow you're lost in 10 moves.</p>
+                            <div class="meme-quote">
+                                "Your endgame is giving 'I didn't study for the test' energy."
+                            </div>
+                            <button class="challenge-btn">Face The Pain</button>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="scroll-animation">
+                    <div class="card master-card">
+                        <img src="Mounish.png" alt="Mounish" class="master-img">
+                        <div class="master-info">
+                            <h2>Mounish "The Mystery" Player</h2>
+                            <p>Rating: <span class="rating">?</span></p>
+                            <p>Nobody knows his true rating. Could be 1200, could be 2700. The ultimate wildcard.</p>
+                            <div class="meme-quote">
+                                "I'm either about to blunder my queen or calculate 15 moves ahead. I'll decide when we play."
+                            </div>
+                            <button class="challenge-btn">Risk It All</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Login Page -->
+        <div id="login" class="page">
+            <div class="container">
+                <h1>Login to Your Account</h1>
+                <div class="form-container">
+                    <div class="card">
+                        <form>
+                            <div class="form-group">
+                                <label for="login-email">Email</label>
+                                <input type="email" id="login-email" placeholder="your.move@example.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="login-password">Password</label>
+                                <input type="password" id="login-password" placeholder="Your secret opening prep" required>
+                            </div>
+                            <button type="submit">Login</button>
+                        </form>
+                        <p style="text-align: center; margin-top: 1rem;">
+                            Don't have an account? <a href="#" onclick="showPage('signup')">Sign up</a>
+                        </p>
+                        <div class="meme-quote" style="text-align: center;">
+                            "Forgot your password? That's a blunder." - Chess Elitist Club
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sign Up Page -->
+        <div id="signup" class="page">
+            <div class="container">
+                <h1>Join The Club</h1>
+                <div class="form-container">
+                    <div class="card">
+                        <form>
+                            <div class="form-group">
+                                <label for="signup-name">Full Name</label>
+                                <input type="text" id="signup-name" placeholder="Future Grandmaster" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-email">Email</label>
+                                <input type="email" id="signup-email" placeholder="your.move@example.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-password">Password</label>
+                                <input type="password" id="signup-password" placeholder="Make it stronger than your opening" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-rating">Your Chess Rating (be honest)</label>
+                                <input type="number" id="signup-rating" placeholder="1000" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-opening">Favorite Opening</label>
+                                <input type="text" id="signup-opening" placeholder="We will judge you based on this" required>
+                            </div>
+                            <button type="submit">Sign Up</button>
+                        </form>
+                        <p style="text-align: center; margin-top: 1rem;">
+                            Already a member? <a href="#" onclick="showPage('login')">Login</a>
+                        </p>
+                        <div class="meme-quote" style="text-align: center;">
+                            "By signing up, you agree to be simultaneously educated and roasted." - The Fine Print
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Chess Elitist Club &copy; 2025 - Where every move is judged</p>
+        <div class="social-links">
+            <a href="#" aria-label="Facebook">📱</a>
+            <a href="#" aria-label="Twitter">🐦</a>
+            <a href="#" aria-label="Instagram">📸</a>
+            <a href="#" aria-label="Discord">💬</a>
+        </div>
+        <p>Address: 64 Squares Street, Checkmate City</p>
+    </footer>
+
+    <script>
+        // Toggle dark/light mode
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        // Check user preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+
+        // Page navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        // Scroll animation
+        function checkVisible() {
+            const elements = document.querySelectorAll('.scroll-animation');
+            elements.forEach(element => {
+                const position = element.getBoundingClientRect();
+                if (position.top < window.innerHeight - 100) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // Initial check and add scroll listener
+        window.addEventListener('load', checkVisible);
+        window.addEventListener('scroll', checkVisible);
+        
+        // Form submission prevention
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert("Form submitted! (This would connect to a backend in a real application)");
+            });
+        });
+        
+        // Challenge buttons
+        document.querySelectorAll('.challenge-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                alert("Challenge sent! Prepare to get wrecked in the most respectful way possible.");
+            });
+        });
+    </script>
+</body>
+</html>
